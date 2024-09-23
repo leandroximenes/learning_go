@@ -11,3 +11,12 @@ FROM mcr.microsoft.com/devcontainers/go:1-1.23-bookworm
 
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+
+# Install Delve for debugging
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+
+# Set the workspace directory
+WORKDIR /workspace
+
+# Expose the debugging port
+EXPOSE 2345
