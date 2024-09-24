@@ -1,9 +1,10 @@
 // .devcontainer/devcontainer.json
 {
-	"name": "Go & PostgreSQL",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "app",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "name": "Learning Go",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "app",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "initializeCommand": "bash -c '[[ $(docker ps -aq) ]] && docker stop $(docker ps -aq) && docker rm $(docker ps -aq) || echo \"No container running\"'",
     "settings": {
         "go.gopath": "/go",
         "go.toolsGopath": "/go"
@@ -11,9 +12,12 @@
     "extensions": [
         "golang.go"
     ],
-    "postCreateCommand": "go mod init hello-world && go mod tidy",
-    "forwardPorts": [2345],
-    "runArgs": ["--init"],
+    "forwardPorts": [
+        2345
+    ],
+    "runArgs": [
+        "--init"
+    ],
     "containerEnv": {
         "GO111MODULE": "on"
     },
