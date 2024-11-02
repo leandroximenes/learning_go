@@ -3,14 +3,15 @@
     "name": "Learning Go",
     "dockerComposeFile": "docker-compose.yml",
     "service": "app",
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    "workspaceFolder": "/workspaces",
     "initializeCommand": "bash -c '[[ $(docker ps -aq) ]] && docker stop $(docker ps -aq) && docker rm $(docker ps -aq) || echo \"No container running\"'",
     "settings": {
         "go.gopath": "/go",
         "go.toolsGopath": "/go"
     },
     "extensions": [
-        "golang.go"
+        "golang.go",
+        "mhutchie.git-graph"
     ],
     "forwardPorts": [
         2345

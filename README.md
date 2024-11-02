@@ -12,3 +12,14 @@ To start the server:
 ```bash
 go run main.go
 ```
+
+
+# Configuring exercism 
+
+1. Set the .env `EXERCISM_TOKEN`
+
+2. Run the command:
+
+```bash
+exercism configure --token=$EXERCISM_TOKEN --workspace=/workspaces/exercism
+```
