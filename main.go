@@ -20,11 +20,15 @@ var todos = []todo{
 
 func getTodos(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, todos)
+}
 
+func helloWeb(context *gin.Context) {
+	context.String(200, "Hello, World!")
 }
 
 func main() {
 	router := gin.Default()
+	router.GET("/", helloWeb)
 	router.GET("/todos", getTodos)
 	router.Run("localhost:9090")
 }
