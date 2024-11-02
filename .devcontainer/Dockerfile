@@ -15,6 +15,15 @@ FROM mcr.microsoft.com/devcontainers/go:1-1.23-bookworm
 # Install Delve for debugging
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
+# Install Exercism CLI
+RUN curl -L -o exercism-linux.tar.gz https://github.com/exercism/cli/releases/download/v3.5.2/exercism-3.5.2-linux-x86_64.tar.gz \
+    && tar -xzf exercism-linux.tar.gz \
+    && mkdir -p ~/bin \
+    && mv exercism ~/bin \
+    && rm exercism-linux.tar.gz
+
+RUN exercism configure --token=$EXERCISM_TOKEN
+
 # Set the workspace directory
 WORKDIR /workspace
 
