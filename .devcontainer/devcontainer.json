@@ -5,6 +5,7 @@
     "service": "app",
     "workspaceFolder": "/workspaces",
     "initializeCommand": "bash -c '[[ $(docker ps -aq) ]] && docker stop $(docker ps -aq) && docker rm $(docker ps -aq) || echo \"No container running\"'",
+    "postCreateCommand": "exercism configure --token=$EXERCISM_TOKEN --workspace=$EXERCISM_WORKSPACE",
     "settings": {
         "go.gopath": "/go",
         "go.toolsGopath": "/go"
