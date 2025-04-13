@@ -2,10 +2,15 @@ package main
 
 import (
 	"fmt"
-	"learning-go/udemy/go-lang/01-pacotes/auxiliar"
+	"modulo/auxiliar"
+
+	"github.com/badoux/checkmail"
 )
 
 func main() {
 	fmt.Println("Hello World")
 	auxiliar.Write()
+
+	error := checkmail.ValidateFormat("leandroximenes.com")
+	fmt.Println(error)
 }
