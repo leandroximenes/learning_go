@@ -8,8 +8,20 @@ type User struct {
 	Stats string
 }
 
+// this is a function
 func UpdateUser(user *User) {
 	user.Stats = "updated"
+}
+
+// this is a method
+func (u *User) SetAge(age int) error {
+	u.Age = age
+	return nil
+}
+
+// ineffective assignment to field User.Age (SA4005)go-staticcheck
+func (u User) IncreaseAge() { //It will not work because it's not a pointer and there isn't a return
+	u.Age++
 }
 
 func main() {
@@ -36,8 +48,21 @@ func main() {
 	fmt.Println("*othAlias	", *othAlias) // The bigger one
 
 	jhon := User{"Jhon", 42, "new"}
+	paul := User{"Paul", 30, "new"}
 	fmt.Println(jhon)
+
 	UpdateUser(&jhon)
 	fmt.Println(jhon)
 
+	jhon.SetAge(24)
+	fmt.Println(jhon)
+
+	fmt.Println(paul)
+	err := paul.SetAge(18)
+	if err != nil {
+		fmt.Println("Erro to set age")
+	}
+	fmt.Println(paul)
+	paul.IncreaseAge()
+	fmt.Println(paul)
 }
