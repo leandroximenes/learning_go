@@ -2,6 +2,16 @@ package main
 
 import "fmt"
 
+type User struct {
+	Name  string
+	Age   int
+	Stats string
+}
+
+func UpdateUser(user *User) {
+	user.Stats = "updated"
+}
+
 func main() {
 	fmt.Println("## Pointers ##")
 	fmt.Println("")
@@ -11,20 +21,23 @@ func main() {
 	var nomePtr *string = &nome
 	var alias *string = &nome
 	var othAlias *string = nomePtr
-	
-	println("nome		", nome)		// Jhon
-	println("nomePtr   	", nomePtr)		// 0xc000104ef8
-	println("*nomePtr	", *nomePtr)	// Jhon
-	println("&nome		", &nome)		// 0xc000104ef8
-	println("&nomePtr	", &nomePtr)	// 0xc000104ef0
-	
-	println("*alias		", *alias)	// Jhon
+
+	fmt.Println("nome		", nome)         // Jhon
+	fmt.Println("nomePtr   	", nomePtr) // 0xc000104ef8
+	fmt.Println("*nomePtr	", *nomePtr)  // Jhon
+	fmt.Println("&nome		", &nome)       // 0xc000104ef8
+	fmt.Println("&nomePtr	", &nomePtr)  // 0xc000104ef0
+
+	fmt.Println("*alias		", *alias) // Jhon
 	*alias = "The bigger one"
-	println("&alias		", &alias)	// 0xc000104ef0
-	println("*alias		", *alias)	// The bigger one
-	println("nome		", nome)	// The bigger one
-	println("*othAlias	", *othAlias)	// The bigger one
+	fmt.Println("&alias		", &alias)      // 0xc000104ef0
+	fmt.Println("*alias		", *alias)      // The bigger one
+	fmt.Println("nome		", nome)          // The bigger one
+	fmt.Println("*othAlias	", *othAlias) // The bigger one
 
-
+	jhon := User{"Jhon", 42, "new"}
+	fmt.Println(jhon)
+	UpdateUser(&jhon)
+	fmt.Println(jhon)
 
 }
