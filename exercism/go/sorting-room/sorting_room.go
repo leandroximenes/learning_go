@@ -1,6 +1,9 @@
 package sorting
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 // DescribeNumber should return a string describing the number.
 func DescribeNumber(f float64) string {
@@ -32,15 +35,33 @@ type FancyNumberBox interface {
 // ExtractFancyNumber should return the integer value for a FancyNumber
 // and 0 if any other FancyNumberBox is supplied.
 func ExtractFancyNumber(fnb FancyNumberBox) int {
-	panic("Please implement ExtractFancyNumber")
+	switch fnb.(type) {
+	case FancyNumber:
+		i, _ := strconv.Atoi(fnb.Value())
+		return i
+	default:
+		return 0
+	}
 }
 
 // DescribeFancyNumberBox should return a string describing the FancyNumberBox.
 func DescribeFancyNumberBox(fnb FancyNumberBox) string {
-	panic("Please implement DescribeFancyNumberBox")
+	number := float64(ExtractFancyNumber(fnb))
+	return fmt.Sprintf("This is a fancy box containing the number %.1f", number)
 }
 
 // DescribeAnything should return a string describing whatever it contains.
 func DescribeAnything(i interface{}) string {
-	panic("Please implement DescribeAnything")
+	switch v := i.(type) {
+	case int:
+		return DescribeNumber(float64(v))
+	case float64:
+		return DescribeNumber(float64(v))
+	case NumberBox:
+		return DescribeNumberBox(v)
+	case FancyNumberBox:
+		return DescribeFancyNumberBox(v)
+	default:
+		return "Return to sender"
+	}
 }
