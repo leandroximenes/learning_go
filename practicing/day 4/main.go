@@ -8,9 +8,16 @@ import (
 
 type Stats string
 
+type (
+	Rule       string
+	Permission string
+)
+
 const (
-	Active   Stats = "active"
-	Inactive Stats = "inactive"
+	Active   Stats      = "active"
+	Inactive Stats      = "inactive"
+	CanEdit  Rule       = "canEdit"
+	Create   Permission = "create"
 )
 
 type (
