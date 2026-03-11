@@ -1,9 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type User struct {
-	Name string
+	Name     string
+	LastName string
 }
 
 func main() {
@@ -28,8 +32,13 @@ func main() {
 
 	fmt.Println(exerc2)
 
-	user := User{}
-	changeName(&user)
+	user := getUser("1")
+	if user == nil {
+		fmt.Println("No user found")
+		return
+	}
+
+	changeName(user)
 	fmt.Println(user.Name)
 	fmt.Printf("%+v\n", user)
 
@@ -43,5 +52,16 @@ func changeValue(n *int) {
 }
 
 func changeName(u *User) {
-	(*u).Name = "leandro"
+	(*u).Name = strings.ToUpper(u.Name)
+	// or
+	u.LastName = strings.ToUpper(u.LastName)
+}
+
+func getUser(id string) (user *User) {
+	if id != "1" {
+		return nil
+	}
+
+	u := User{Name: "leandro", LastName: "ximenes"}
+	return &u
 }
