@@ -38,6 +38,9 @@ func main() {
 	sort.Slice(userList, func(i, j int) bool {
 		return userList[i].Name < userList[j].Name
 	})
+
+	fmt.Println("Lista ordenada")
+	fmt.Printf("%+v\n", userList)
 }
 
 func newUser(id, name, lastName string) (u *User) {
