@@ -5,6 +5,12 @@ import (
 	"fmt"
 )
 
+const (
+	Child    = "child"
+	Teenager = "teenager"
+	Adult    = "adult"
+)
+
 func main() {
 	fmt.Println("Day 10. Let's go!")
 
@@ -39,22 +45,20 @@ func main() {
 
 		age, ok := person["age"].(int)
 		if !ok {
-			fmt.Println("Invalid name type")
+			fmt.Println("Invalid age type")
 			continue
 		}
 
-		if _, category, err := evaluatePerson(name, age); err != nil {
+		_, category, err := evaluatePerson(name, age)
+		if err != nil {
 			fmt.Println(err)
 			continue
-		} else {
-			counts[category]++
 		}
+
+		counts[category]++
 	}
 
-	fmt.Println("Resumo:")
-	fmt.Printf("child: %d \n", counts["child"])
-	fmt.Printf("teenager: %d \n", counts["teenager"])
-	fmt.Printf("adult: %d \n", counts["adult"])
+	printSummary(counts)
 
 }
 
@@ -64,14 +68,36 @@ func evaluatePerson(name string, age int) (string, string, error) {
 	}
 
 	if age < 0 {
-		return "", "", errors.New("Invalid age")
+		return "", "", fmt.Errorf("Invalid age: %d", age)
 	}
 
+	category, err := getCategory(age)
+	if err != nil {
+		return "", "", err
+	}
+	return fmt.Sprintf("%s is an %s", name, category), category, nil
+}
+
+func getCategory(age int) (string, error) {
+	if age < 0 {
+		return "", errors.New("invalid age")
+	}
 	if age < 13 {
-		return fmt.Sprintf("%s is a child", name), "child", nil
-	} else if age <= 17 {
-		return fmt.Sprintf("%s is a teenager", name), "teenager", nil
+		return Child, nil
+	}
+	if age <= 17 {
+		return Teenager, nil
+	}
+	return Adult, nil
+}
+
+func printSummary(counts map[string]int) {
+	categories := []string{Child, Teenager, Adult}
+
+	fmt.Println("Resumo: ")
+
+	for _, category := range categories {
+		fmt.Printf("%s: %d\n", category, counts[category])
 	}
 
-	return fmt.Sprintf("%s is an adult", name), "adult", nil
 }
