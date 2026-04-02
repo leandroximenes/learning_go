@@ -5,51 +5,65 @@ import (
 	"fmt"
 )
 
+type Category string
+
+func (c Category) String() string {
+	switch c {
+	case Child:
+		return "Child"
+	case Teenager:
+		return "Teenager"
+	case Adult:
+		return "Adult"
+	default:
+		return "Unknown"
+	}
+}
+
+func (c Category) Article() string {
+	switch c {
+	case Adult:
+		return "an"
+	default:
+		return "a"
+	}
+}
+
+type Person struct {
+	Name string
+	Age  int
+}
+
 const (
-	Child    = "child"
-	Teenager = "teenager"
-	Adult    = "adult"
+	Child    Category = "child"
+	Teenager Category = "teenager"
+	Adult    Category = "adult"
 )
 
 func main() {
 	fmt.Println("Day 10. Let's go!")
 
-	name := "João"
-	age := 36
-
-	message, _, err := evaluatePerson(name, age)
+	personExample := Person{Name: "João", Age: 5}
+	message, _, err := evaluatePerson(personExample)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
 	fmt.Println(message)
 
 	// New topic
 	fmt.Println("slices & maps")
 
-	people := []map[string]interface{}{
-		{"name": "Ana", "age": 10},
-		{"name": "Bia", "age": 15},
-		{"name": "Lia", "age": 22},
-		{"name": "", "age": 30},
+	people := []Person{
+		{Name: "Ana", Age: 10},
+		{Name: "Bia", Age: 15},
+		{Name: "Lia", Age: 22},
+		{Name: "", Age: 30},
 	}
 
-	counts := make(map[string]int)
+	counts := make(map[Category]int)
 	for _, person := range people {
-		name, ok := person["name"].(string)
-		if !ok {
-			fmt.Println("Invalid name type")
-			continue
-		}
-
-		age, ok := person["age"].(int)
-		if !ok {
-			fmt.Println("Invalid age type")
-			continue
-		}
-
-		_, category, err := evaluatePerson(name, age)
+		_, category, err := evaluatePerson(person)
 		if err != nil {
 			fmt.Println(err)
 			continue
@@ -62,23 +76,20 @@ func main() {
 
 }
 
-func evaluatePerson(name string, age int) (string, string, error) {
-	if name == "" {
-		return "", "", errors.New("Name attribute is required")
+func evaluatePerson(person Person) (string, Category, error) {
+	if person.Name == "" {
+		return "", "", fmt.Errorf("Name attribute is required")
 	}
 
-	if age < 0 {
-		return "", "", fmt.Errorf("Invalid age: %d", age)
-	}
-
-	category, err := getCategory(age)
+	category, err := getCategory(person.Age)
 	if err != nil {
 		return "", "", err
 	}
-	return fmt.Sprintf("%s is an %s", name, category), category, nil
+	message := fmt.Sprintf("%s is %s %s", person.Name, category.Article(), category)
+	return message, category, nil
 }
 
-func getCategory(age int) (string, error) {
+func getCategory(age int) (Category, error) {
 	if age < 0 {
 		return "", errors.New("invalid age")
 	}
@@ -91,10 +102,10 @@ func getCategory(age int) (string, error) {
 	return Adult, nil
 }
 
-func printSummary(counts map[string]int) {
-	categories := []string{Child, Teenager, Adult}
+func printSummary(counts map[Category]int) {
+	categories := []Category{Child, Teenager, Adult}
 
-	fmt.Println("Resumo: ")
+	fmt.Println("Resumo:")
 
 	for _, category := range categories {
 		fmt.Printf("%s: %d\n", category, counts[category])
