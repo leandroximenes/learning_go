@@ -6,6 +6,7 @@ import (
 
 type Notifier interface {
 	Notify() string
+	Recipient() string
 }
 
 type Email struct {
@@ -21,6 +22,10 @@ func (e Email) Notify() string {
 	return fmt.Sprintf("Sending email to %s", e.To)
 }
 
+func (e Email) Recipient() string {
+	return e.To
+}
+
 type SMS struct {
 	To      string
 	From    string
@@ -31,13 +36,17 @@ func (s SMS) Notify() string {
 	return fmt.Sprintf("Sending SMS to %s", s.To)
 }
 
+func (s SMS) Recipient() string {
+	return s.To
+}
+
 func SendMessage(e Notifier) string {
 	return e.Notify()
 }
 
 func SendSave(e Notifier) string {
 	defer func() {
-		if r := recover(); r != "" {
+		if r := recover(); r != nil {
 			fmt.Println("Erro ao enviar notificação")
 		}
 	}()
@@ -62,4 +71,24 @@ func main() {
 
 	fmt.Println(emailMessage)
 	fmt.Println(smsMessage)
+
+	var emailList []string
+	emailList = append(emailList, "leandro@example.com")
+	emailList = append(emailList, "alessandra@example.com")
+	emailList = append(emailList, "sara@example.com")
+
+	for _, email := range emailList {
+		fmt.Println(email)
+	}
+
+	notifies := make(map[string]Notifier)
+
+	notifies["email"] = email
+	notifies["sms"] = sms
+
+	for _, n := range notifies {
+		fmt.Printf("Notificando to %s a new message", n.Recipient())
+		SendSave(n)
+	}
+
 }
