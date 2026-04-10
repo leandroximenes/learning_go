@@ -5,6 +5,11 @@ import (
 	"fmt"
 )
 
+type InvalidCowsError struct {
+	cows    int
+	message string
+}
+
 // TODO: define the 'DivideFood' function
 func DivideFood(fc FodderCalculator, cowsNumber int) (float64, error) {
 	fodderAmount, err := fc.FodderAmount(cowsNumber)
@@ -32,24 +37,26 @@ func ValidateInputAndDivideFood(fc FodderCalculator, cowsNumber int) (float64, e
 
 }
 
-// TODO: define the 'ValidateNumberOfCows' function
+func (e *InvalidCowsError) Error() string {
+	return fmt.Sprintf("%d cows are invalid: %s", e.cows, e.message)
+}
+
+// ValidateNumberOfCows returns nil if the cow count is valid, or *InvalidCowsError otherwise.
 func ValidateNumberOfCows(cowsNumber int) error {
 	if cowsNumber > 0 {
 		return nil
 	}
 
-	var customMessage string
+	// Create a default variable
+	var erroResponse *InvalidCowsError = &InvalidCowsError{
+		cows: cowsNumber, message: "no cows don't need food",
+	}
+
 	if cowsNumber < 0 {
-		customMessage = "there are no negative cows"
+		erroResponse.message = "there are no negative cows"
 	}
 
-	if cowsNumber == 0 {
-		customMessage = "no cows don't need food"
-	}
-
-	erroMessage := fmt.Sprintf("%d cows are invalid: %s", cowsNumber, customMessage)
-
-	return errors.New(erroMessage)
+	return erroResponse
 }
 
 // Your first steps could be to read through the tasks, and create
