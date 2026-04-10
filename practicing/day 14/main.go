@@ -18,18 +18,19 @@ func (err *LoginError) Error() string {
 }
 
 func ValidateFields(userName string, password string) error {
-	var err *LoginError = &LoginError{Username: userName}
-
 	if userName == "" {
-		err.Reason = "username is required"
-		return err
+		return &LoginError{
+			Username: userName,
+			Reason:   "username is required",
+		}
 	}
 
 	if password == "" {
-		err.Reason = "password is required"
-		return err
+		return &LoginError{
+			Username: userName,
+			Reason:   "password is required",
+		}
 	}
-
 
 	return nil
 }
