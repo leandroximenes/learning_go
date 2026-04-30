@@ -45,6 +45,4 @@ func main() {
 
 	fmt.Println(result)
 
-	fmt.Println("Today's review:")
-	fmt.Println("Understanding how Go uses interfaces in practical way (without useless theory)")
 }
