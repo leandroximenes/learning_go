@@ -11,6 +11,8 @@ type Greeter interface {
 type Italian struct {
 }
 
+var _ Greeter = Italian{}
+
 func (i Italian) LanguageName() string {
 	return "Italian"
 }
@@ -19,6 +21,10 @@ func (i Italian) Greet(text string) string {
 }
 
 type Portuguese struct {
+}
+
+func MakePortugueseInterface(ab string) Greeter {
+	return Portuguese{}
 }
 
 func (i Portuguese) LanguageName() string {
